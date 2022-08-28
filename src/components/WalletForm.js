@@ -1,37 +1,59 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCoins } from '../redux/actions';
+import { fetchCoinsName, expenseRegister } from '../redux/actions';
+import coinApiStatus from '../services/coinApiStatus';
 
 class WalletForm extends Component {
   constructor() {
     super();
     this.state = {
+      id: 0,
       value: '',
       description: '',
-      isDisabled: true,
-
+      moeda: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      isDisabled: false,
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchCoins());
+    dispatch(fetchCoinsName());
   }
 
-  inputHandler = (({ target }) => {
-    const { name, value } = target;
+  inputHandler = ((event) => {
+    const { target } = event;
+    const { name } = target;
+    const value = target.type === 'select' ? 'selected' : 'value';
     this.setState({
-      [name]: value,
-    }, this.isButtonDisable);
+      [name]: target[value],
+    });
   });
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault();
+    const { id, value, description, moeda, method, tag } = this.state;
+    const { dispatch } = this.props;
+    const exchangeRates = await coinApiStatus();
+    const valorNominal = value * exchangeRates[moeda].ask;
+    const objExpense = {
+      id,
+      value,
+      description,
+      currency: moeda,
+      method,
+      tag,
+      exchangeRates,
+    };
+    this.setState({ id: id + 1 });
+    this.setState({ value: '', description: '' });
+    dispatch(expenseRegister(objExpense, valorNominal));
   };
 
   render() {
-    const { value, description, isDisabled } = this.state;
+    const { value, description, isDisabled, method } = this.state;
     const { coins } = this.props;
     const moedasNames = coins.map((moeda) => (
       <option
@@ -44,12 +66,13 @@ class WalletForm extends Component {
     return (
       <form onSubmit={ this.handleSubmit }>
         <input
-          type="text"
+          type="number"
           name="value"
           id="value"
           value={ value }
           onChange={ this.inputHandler }
           data-testid="value-input"
+          placeholder="Valor"
         />
         <input
           type="text"
@@ -58,16 +81,30 @@ class WalletForm extends Component {
           value={ description }
           onChange={ this.inputHandler }
           data-testid="description-input"
+          placeholder="Descrição"
         />
-        <select data-testid="currency-input">
+        <select
+          name="moeda"
+          data-testid="currency-input"
+          onChange={ this.inputHandler }
+        >
           {moedasNames}
         </select>
-        <select data-testid="method-input">
+        <select
+          name="method"
+          selected={ method }
+          data-testid="method-input"
+          onChange={ this.inputHandler }
+        >
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
           <option>Cartão de débito</option>
         </select>
-        <select data-testid="tag-input">
+        <select
+          name="tag"
+          data-testid="tag-input"
+          onChange={ this.inputHandler }
+        >
           <option>Alimentação</option>
           <option>Lazer</option>
           <option>Trabalho</option>
@@ -78,7 +115,7 @@ class WalletForm extends Component {
           type="submit"
           disabled={ isDisabled }
         >
-          Entrar
+          Adicionar despesa
         </button>
       </form>
     );

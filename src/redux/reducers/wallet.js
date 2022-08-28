@@ -1,10 +1,11 @@
-import { RECEIVE_COINS_NAMES, REQUEST_COINS } from '../actions';
+import { RECEIVE_COINS_NAMES, RECEIVE_EXPENSE, REQUEST_COINS } from '../actions';
 
 const INITIAL_STATE = {
   currencies: [], // array de string
   expenses: [], // array de objetos, com cada objeto tendo as chaves id, value, currency, method, tag, description e exchangeRates
   editor: false, // valor booleano que indica de uma despesa está sendo editada
   idToEdit: 0, // valor numérico que armazena o id da despesa que esta sendo editada
+  totalValue: 0,
 };
 
 function wallet(state = INITIAL_STATE, action) {
@@ -14,6 +15,11 @@ function wallet(state = INITIAL_STATE, action) {
   case RECEIVE_COINS_NAMES:
     return ({ ...state,
       currencies: action.coins });
+  case RECEIVE_EXPENSE:
+    return ({ ...state,
+      expenses: [...state.expenses, action.expense],
+      totalValue: state.totalValue + action.valorNominal,
+    });
   default:
     return state;
   }
