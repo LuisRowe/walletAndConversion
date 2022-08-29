@@ -1,4 +1,6 @@
-import { RECEIVE_COINS_NAMES, RECEIVE_EXPENSE, REQUEST_COINS } from '../actions';
+import {
+  DELETE_EXPENSE, RECEIVE_COINS_NAMES, RECEIVE_EXPENSE, REQUEST_COINS,
+} from '../actions';
 
 const INITIAL_STATE = {
   currencies: [], // array de string
@@ -19,6 +21,14 @@ function wallet(state = INITIAL_STATE, action) {
     return ({ ...state,
       expenses: [...state.expenses, action.expense],
       totalValue: state.totalValue + action.valorNominal,
+    });
+  case DELETE_EXPENSE:
+    return ({ ...state,
+      expenses: state.expenses.filter(
+        (expense) => expense.id !== parseInt(action.id, 10),
+      ),
+      totalValue:
+        state.totalValue.toFixed(2) - parseFloat(action.BRLValue).toFixed(2),
     });
   default:
     return state;
