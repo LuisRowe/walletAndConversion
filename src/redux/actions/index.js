@@ -6,17 +6,28 @@ export const RECEIVE_COINS_NAMES = 'RECEIVE_COINS';
 export const RECEIVE_EXPENSE = 'RECEIVE_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 export const EDIT_EXPENSE = 'EDIT_EXPENSE';
+export const EDIT_REGISTER = 'EDIT_REGISTER';
+export const HEADER = 'HEADER';
 
 export const login = (email) => ({ type: LOGIN, email });
 
 export const expenseRegister = (expense, valorNominal) => ({
   type: RECEIVE_EXPENSE, expense, valorNominal });
 
+export const editRegister = (expenseEdited, value, currency) => ({
+  type: EDIT_REGISTER,
+  expenseEdited,
+  value: parseFloat(value),
+  currency });
+
 export const deleteExpenseAction = (id, BRLValue) => ({
   type: DELETE_EXPENSE, id, BRLValue });
 
-export const editExpenseAction = () => ({
-  type: EDIT_EXPENSE });
+export const editExpenseAction = (id) => ({
+  type: EDIT_EXPENSE, id });
+
+export const headerTotalUpdate = (total) => ({
+  type: HEADER, total });
 
 const requestCoins = () => ({
   type: REQUEST_COINS });
@@ -32,12 +43,3 @@ export function fetchCoinsName() {
     dispatch(receiveCoins(coins));
   };
 }
-
-// export function fetchCoinsStatus() {
-//   return async (dispatch) => { // thunk declarado
-//     dispatch(requestCoins());
-//     const coins = await coinsApiName();
-//     console.log(coins);
-//     dispatch(receiveCoins(coins));
-//   };
-// }

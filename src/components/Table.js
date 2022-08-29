@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteExpenseAction, editExpenseAction } from '../redux/actions';
+import {
+  deleteExpenseAction, editExpenseAction } from '../redux/actions';
 
 class Table extends Component {
-  editExpense = () => {
+  editExpense = ({ target: { id } }) => {
     const { dispatch } = this.props;
-    dispatch(editExpenseAction());
+    dispatch(editExpenseAction(parseInt(id, 10)));
   };
 
   deleteExpense = ({ target: { id, value } }) => {
@@ -20,7 +21,6 @@ class Table extends Component {
       const { id, description, tag, method, value, exchangeRates, currency } = expense;
       const apiCoinData = exchangeRates[currency];
       const { name, ask } = apiCoinData;
-      // const nameSplited = name.split('/');
       const convertedValue = ask * value;
       return (
         <tr key={ id }>
@@ -54,6 +54,7 @@ class Table extends Component {
         </tr>
       );
     });
+
     return (
       <table>
         <thead>

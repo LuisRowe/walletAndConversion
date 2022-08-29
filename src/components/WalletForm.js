@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchCoinsName, expenseRegister } from '../redux/actions';
+import { fetchCoinsName, expenseRegister, editRegister } from '../redux/actions';
 import coinApiStatus from '../services/coinApiStatus';
 
 class WalletForm extends Component {
@@ -31,7 +31,22 @@ class WalletForm extends Component {
     });
   });
 
-  handleSubmit = async (event) => {
+  handleSubmitEdit = async (event) => {
+    event.preventDefault();
+    const { value, description, moeda, method, tag } = this.state;
+    const { dispatch, idToEdit } = this.props;
+    const objExpense = {
+      id: idToEdit,
+      value,
+      description,
+      currency: moeda,
+      method,
+      tag,
+    };
+    dispatch(editRegister(objExpense, value, moeda));
+  };
+
+  handleSubmitAdd = async (event) => {
     event.preventDefault();
     const { id, value, description, moeda, method, tag } = this.state;
     const { dispatch } = this.props;
@@ -67,6 +82,7 @@ class WalletForm extends Component {
       button = (
         <button
           type="submit"
+          onClick={ this.handleSubmitEdit }
         >
           Editar despesa
         </button>
@@ -75,13 +91,14 @@ class WalletForm extends Component {
       button = (
         <button
           type="submit"
+          onClick={ this.handleSubmitAdd }
         >
           Adicionar Despesa
         </button>);
     }
 
     return (
-      <form onSubmit={ this.handleSubmit }>
+      <form>
         <input
           type="number"
           name="value"
@@ -136,12 +153,14 @@ class WalletForm extends Component {
 
 const mapStateToProps = (state) => ({
   coins: state.wallet.currencies,
-  editor: state.wallet.editor });
+  editor: state.wallet.editor,
+  idToEdit: state.wallet.idToEdit });
 
 WalletForm.propTypes = {
   coins: PropTypes.arrayOf(PropTypes.string).isRequired,
   editor: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  idToEdit: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(WalletForm);
