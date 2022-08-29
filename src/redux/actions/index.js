@@ -5,6 +5,7 @@ export const REQUEST_COINS = 'REQUEST_COINS';
 export const RECEIVE_COINS_NAMES = 'RECEIVE_COINS';
 export const RECEIVE_EXPENSE = 'RECEIVE_EXPENSE';
 export const DELETE_EXPENSE = 'DELETE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 
 export const login = (email) => ({ type: LOGIN, email });
 
@@ -13,6 +14,9 @@ export const expenseRegister = (expense, valorNominal) => ({
 
 export const deleteExpenseAction = (id, BRLValue) => ({
   type: DELETE_EXPENSE, id, BRLValue });
+
+export const editExpenseAction = () => ({
+  type: EDIT_EXPENSE });
 
 const requestCoins = () => ({
   type: REQUEST_COINS });

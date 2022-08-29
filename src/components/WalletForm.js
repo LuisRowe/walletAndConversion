@@ -14,7 +14,6 @@ class WalletForm extends Component {
       moeda: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      isDisabled: false,
     };
   }
 
@@ -53,8 +52,8 @@ class WalletForm extends Component {
   };
 
   render() {
-    const { value, description, isDisabled, method } = this.state;
-    const { coins } = this.props;
+    const { value, description, method } = this.state;
+    const { coins, editor } = this.props;
     const moedasNames = coins.map((moeda) => (
       <option
         key={ moeda }
@@ -63,6 +62,24 @@ class WalletForm extends Component {
         {moeda}
       </option>
     ));
+    let button = '';
+    if (editor === true) {
+      button = (
+        <button
+          type="submit"
+        >
+          Editar despesa
+        </button>
+      );
+    } else {
+      button = (
+        <button
+          type="submit"
+        >
+          Adicionar Despesa
+        </button>);
+    }
+
     return (
       <form onSubmit={ this.handleSubmit }>
         <input
@@ -111,22 +128,19 @@ class WalletForm extends Component {
           <option>Transporte</option>
           <option>Saúde</option>
         </select>
-        <button
-          type="submit"
-          disabled={ isDisabled }
-        >
-          Adicionar despesa
-        </button>
+        {button}
       </form>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  coins: state.wallet.currencies });
+  coins: state.wallet.currencies,
+  editor: state.wallet.editor });
 
 WalletForm.propTypes = {
   coins: PropTypes.arrayOf(PropTypes.string).isRequired,
+  editor: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

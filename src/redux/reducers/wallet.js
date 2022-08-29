@@ -1,5 +1,5 @@
 import {
-  DELETE_EXPENSE, RECEIVE_COINS_NAMES, RECEIVE_EXPENSE, REQUEST_COINS,
+  DELETE_EXPENSE, EDIT_EXPENSE, RECEIVE_COINS_NAMES, RECEIVE_EXPENSE, REQUEST_COINS,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -21,6 +21,7 @@ function wallet(state = INITIAL_STATE, action) {
     return ({ ...state,
       expenses: [...state.expenses, action.expense],
       totalValue: state.totalValue + action.valorNominal,
+      editor: false,
     });
   case DELETE_EXPENSE:
     return ({ ...state,
@@ -29,6 +30,10 @@ function wallet(state = INITIAL_STATE, action) {
       ),
       totalValue:
         state.totalValue.toFixed(2) - parseFloat(action.BRLValue).toFixed(2),
+    });
+  case EDIT_EXPENSE:
+    return ({ ...state,
+      editor: true,
     });
   default:
     return state;
