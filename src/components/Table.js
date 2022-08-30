@@ -32,8 +32,9 @@ class Table extends Component {
           <td>{parseFloat(ask).toFixed(2)}</td>
           <td>{convertedValue.toFixed(2)}</td>
           <td>Real</td>
-          <td>
+          <td className="btn-td">
             <button
+              className="btn btn-outline-primary"
               id={ id }
               type="button"
               data-testid="edit-btn"
@@ -42,6 +43,7 @@ class Table extends Component {
               Editar
             </button>
             <button
+              className="btn btn-outline-danger"
               id={ id }
               value={ parseFloat(value) * parseFloat(ask) }
               type="button"
@@ -56,8 +58,8 @@ class Table extends Component {
     });
 
     return (
-      <table>
-        <thead>
+      <table className="table table-striped table-bordered">
+        <thead className="table-dark">
           <tr>
             <th>Descrição</th>
             <th>Tag</th>

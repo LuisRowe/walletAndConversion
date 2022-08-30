@@ -8,7 +8,10 @@ class Header extends Component {
     const { email, totalValue } = this.props;
     return (
       <header>
-        <div><img src={ logo } alt="logo" /></div>
+        <div className="logo-name">
+          <img src={ logo } alt="logo" />
+          <h1>TRYBEWALLET</h1>
+        </div>
         <div className="header-info">
           <p>
             Usuário logado:
