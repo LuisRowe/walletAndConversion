@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../redux/actions';
+import logo from '../img/logo.png';
 
 class Login extends React.Component {
   constructor() {
@@ -50,32 +51,57 @@ class Login extends React.Component {
   render() {
     const { email, password, isDisabled } = this.state;
     return (
-      <form onSubmit={ this.handleSubmit }>
-        <input
-          type="text"
-          name="email"
-          id="email"
-          placeholder="Email"
-          value={ email }
-          onChange={ this.inputHandler }
-          data-testid="email-input"
-        />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Senha"
-          value={ password }
-          onChange={ this.inputHandler }
-          data-testid="password-input"
-        />
-        <button
-          type="submit"
-          disabled={ isDisabled }
-        >
-          Entrar
-        </button>
-      </form>
+      <div className="login-body">
+        <h1>TRYBEWALLET</h1>
+        <h2>Carteira de despesas com conversor de moedas</h2>
+        <form onSubmit={ this.handleSubmit } className="login-form">
+          <img src={ logo } alt="logo" />
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">
+              Email:
+              <input
+                className="form-control"
+                type="text"
+                name="email"
+                id="email"
+                placeholder="Email"
+                value={ email }
+                onChange={ this.inputHandler }
+                data-testid="email-input"
+              />
+            </label>
+            <div id="passwordHelpBlock" className="form-text">
+              Seu email deve possuir um formato de email válido.
+            </div>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">
+              Senha:
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Senha"
+                value={ password }
+                onChange={ this.inputHandler }
+                data-testid="password-input"
+              />
+              <div id="passwordHelpBlock" className="form-text">
+                Sua senha precisa possuir 6 caracteres ou mais.
+              </div>
+            </label>
+          </div>
+          <button
+            className="btn btn-success"
+            type="submit"
+            disabled={ isDisabled }
+          >
+            Entrar
+          </button>
+        </form>
+      </div>
+
     );
   }
 }

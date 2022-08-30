@@ -24,10 +24,9 @@ class WalletForm extends Component {
 
   inputHandler = ((event) => {
     const { target } = event;
-    const { name } = target;
-    const value = target.type === 'select' ? 'selected' : 'value';
+    const { name, value } = target;
     this.setState({
-      [name]: target[value],
+      [name]: value,
     });
   });
 

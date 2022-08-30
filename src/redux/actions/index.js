@@ -26,9 +26,6 @@ export const deleteExpenseAction = (id, BRLValue) => ({
 export const editExpenseAction = (id) => ({
   type: EDIT_EXPENSE, id });
 
-export const headerTotalUpdate = (total) => ({
-  type: HEADER, total });
-
 const requestCoins = () => ({
   type: REQUEST_COINS });
 
